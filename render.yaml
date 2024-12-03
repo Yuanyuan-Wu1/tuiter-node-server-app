@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tuiter-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://CS6510:CS6510@cluster0.zpnb3.mongodb.net/tuiter
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000 
