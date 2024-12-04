@@ -41,6 +41,7 @@ app.use(express.json());
 
 // 配置静态文件服务
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
 console.log('Images directory:', path.join(__dirname, 'public/images'));
 
 // 添加测试路由
@@ -61,9 +62,20 @@ app.get('/test-images', (req, res) => {
 // MongoDB 连接
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://CS6510:CS6510@cluster0.zpnb3.mongodb.net/tuiter?retryWrites=true&w=majority&appName=Cluster0';
 
-mongoose.connect(MONGODB_URI)
-    .then(() => console.log('MongoDB Connected:', mongoose.connection.host))
-    .catch(err => console.error('MongoDB Connection Error:', err));
+mongoose.set('debug', true); // 启用调试模式
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => {
+    console.log('MongoDB Connected Successfully');
+    console.log('Database:', mongoose.connection.name);
+    console.log('Host:', mongoose.connection.host);
+})
+.catch((err) => {
+    console.error('MongoDB Connection Error:', err);
+    process.exit(1);
+});
 
 // API 状态检查路由
 app.get('/', (req, res) => {

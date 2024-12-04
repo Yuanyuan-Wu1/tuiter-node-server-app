@@ -16,10 +16,16 @@ const createTuit = async (req, res) => {
 
 const findAllTuits = async (req, res) => {
     try {
+        console.log('Finding all tuits...');
         const tuits = await tuitsDao.findTuits();
+        console.log('Found tuits:', tuits);
         res.json(tuits);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error in findAllTuits:', error);
+        res.status(500).json({
+            error: error.message,
+            details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 };
 
